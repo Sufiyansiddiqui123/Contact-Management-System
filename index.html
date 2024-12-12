@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management System</title>
+    <!-- Add Bootstrap for styling -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3O3VMWSkt8Bhp1IYO4CRhYhWtnJEnKxI3IiljIGtOJpG1gkN"
+        crossorigin="anonymous"
+    />
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #343a40;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-control {
+            height: 50px;
+            font-size: 1.2rem;
+            padding: 10px;
+        }
+        .btn-success {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border: none;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .table {
+            margin-top: 30px;
+            font-size: 1.1rem;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            border: 2px solid #dee2e6;
+        }
+        .table thead {
+            background-color: #007bff;
+            color: white;
+            font-size: 1.2rem;
+        }
+        .table tbody tr {
+            border-bottom: 2px solid #dee2e6;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+        .btn-edit {
+            background-color: #ffc107;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            padding: 8px 16px;
+        }
+        .btn-edit:hover {
+            background-color: #e0a800;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            padding: 8px 16px;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        .divider-column {
+            border-left: 2px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Management System</h1>
+        <!-- Form to add new contacts -->
+        <form id="add-contact-form" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <input id="name" type="text" class="form-control" placeholder="Name" required />
+                </div>
+                <div class="col-md-4">
+                    <input id="email" type="email" class="form-control" placeholder="Email" required />
+                </div>
+                <div class="col-md-4">
+                    <input id="phone" type="text" class="form-control" placeholder="Phone" required />
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-success">Add Contact</button>
+            </div>
+        </form>
+
+        <!-- Table to display contacts -->
+        <table id="contact-table" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="divider-column">Email</th>
+                    <th class="divider-column">Phone</th>
+                    <th class="divider-column">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically generated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
