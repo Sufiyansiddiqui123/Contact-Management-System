@@ -56,4 +56,4 @@ The Entity-Relationship (ER) diagram below represents the database structure for
    cd ContactManagementSystem
 2. **Run the project**
    ```bash
-   node script.js
+   node server.js
