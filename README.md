@@ -54,3 +54,6 @@ The Entity-Relationship (ER) diagram below represents the database structure for
    ```bash
    git clone <repository-url>
    cd ContactManagementSystem
+2. **Run the project**
+   ```bash
+   node script.js
