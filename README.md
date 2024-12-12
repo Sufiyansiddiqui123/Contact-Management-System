@@ -38,7 +38,7 @@ ContactManagementSystem/ │ ├── public/ │ ├── index.html # Main f
 ## ER Diagram
 The Entity-Relationship (ER) diagram below represents the database structure for the Contact Management System:
 
-![ER Diagram](https://i.imgur.com/xMCFe9L.png)
+![ER Diagram](https://github.com/Sufiyansiddiqui123/Contact-Management-System/blob/main/er-diagram-contact-management.png)
 
 ---
 
