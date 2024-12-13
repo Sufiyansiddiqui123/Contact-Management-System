@@ -69,6 +69,34 @@ app.delete("/contacts/:id", (req, res) => {
     });
 });
 
+
+// Update an existing contact
+app.put("/contacts/:id", (req, res) => {
+    const { id } = req.params; // Get the contact ID from the URL
+    const { name, email, phone } = req.body; // Get the updated details from the request body
+
+    // Validate input
+    if (!name || !email || !phone) {
+        return res.status(400).json({ error: "All fields (name, email, phone) are required." });
+    }
+
+    // Update the contact in the database
+    db.run(
+        `UPDATE contacts SET name = ?, email = ?, phone = ? WHERE id = ?`,
+        [name, email, phone, id],
+        function (err) {
+            if (err) {
+                res.status(500).json({ error: err.message });
+            } else if (this.changes === 0) {
+                res.status(404).json({ error: "Contact not found." });
+            } else {
+                res.json({ id, name, email, phone }); // Return the updated contact
+            }
+        }
+    );
+});
+
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
