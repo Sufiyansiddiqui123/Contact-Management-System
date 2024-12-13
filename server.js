@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // Database setup
-const db = new sqlite3.Database("contacts.db", (err) => {
+const db = new sqlite3.Database("./database/contacts.db", (err) => {
     if (err) {
         console.error("Error opening database:", err);
     } else {
