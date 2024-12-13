@@ -1,78 +1,86 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("add-contact-form");
     const contactTableBody = document.querySelector("#contact-table tbody");
+    const apiUrl = "http://localhost:3000/contacts";
 
-    let editingRow = null; // Track the row currently being edited
+    let editingContactId = null; // Track the contact ID being edited
+
+    // Fetch and display contacts on page load
+    async function loadContacts() {
+        const response = await fetch(apiUrl);
+        const contacts = await response.json();
+        contactTableBody.innerHTML = contacts
+            .map(contact => `
+                <tr data-id="${contact.id}">
+                    <td class="name-cell">${contact.name}</td>
+                    <td class="email-cell divider-column">${contact.email}</td>
+                    <td class="phone-cell divider-column">${contact.phone}</td>
+                    <td class="actions-cell divider-column">
+                        <button class="btn-edit btn btn-warning">Edit</button>
+                        <button class="btn-delete btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            `)
+            .join("");
+    }
+
+    loadContacts();
 
     // Handle form submission
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const nameInput = document.getElementById("name");
-        const emailInput = document.getElementById("email");
-        const phoneInput = document.getElementById("phone");
-
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim();
-        const phone = phoneInput.value.trim();
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
 
         if (!name || !email || !phone) {
             alert("Please fill out all fields.");
             return;
         }
 
-        if (editingRow) {
-            // Update existing row
-            editingRow.querySelector(".name-cell").textContent = name;
-            editingRow.querySelector(".email-cell").textContent = email;
-            editingRow.querySelector(".phone-cell").textContent = phone;
-
-            // Clear editing state
-            editingRow = null;
-            form.reset();
+        if (editingContactId) {
+            // Update contact
+            await fetch(`${apiUrl}/${editingContactId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, phone }),
+            });
+            editingContactId = null;
         } else {
             // Add new contact
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td class="name-cell">${name}</td>
-                <td class="email-cell divider-column">${email}</td>
-                <td class="phone-cell divider-column">${phone}</td>
-                <td class="actions-cell divider-column">
-                    <button class="btn-edit btn btn-warning">Edit</button>
-                    <button class="btn-delete btn btn-danger">Delete</button>
-                </td>
-            `;
-
-            contactTableBody.appendChild(row);
+            await fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, phone }),
+            });
         }
 
-        // Clear form inputs
         form.reset();
+        loadContacts();
     });
 
     // Handle click events in the table
-    contactTableBody.addEventListener("click", function (e) {
+    contactTableBody.addEventListener("click", async function (e) {
         const target = e.target;
+        const row = target.closest("tr");
+        const contactId = row?.getAttribute("data-id");
 
         if (target.classList.contains("btn-edit")) {
             // Edit button clicked
-            const row = target.closest("tr");
             const name = row.querySelector(".name-cell").textContent;
             const email = row.querySelector(".email-cell").textContent;
             const phone = row.querySelector(".phone-cell").textContent;
 
-            // Populate form fields with the contact's current data
             document.getElementById("name").value = name;
             document.getElementById("email").value = email;
             document.getElementById("phone").value = phone;
 
-            // Set editing state
-            editingRow = row;
+            editingContactId = contactId; // Set editing contact ID
         } else if (target.classList.contains("btn-delete")) {
             // Delete button clicked
-            const row = target.closest("tr");
-            contactTableBody.removeChild(row);
+            await fetch(`${apiUrl}/${contactId}`, { method: "DELETE" });
+            loadContacts();
         }
     });
 });
